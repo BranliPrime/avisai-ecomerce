@@ -1,0 +1,134 @@
+import React, { useState } from "react";
+import { FaRegEyeSlash } from "react-icons/fa6";
+import { FaRegEye } from "react-icons/fa6";
+import toast from "react-hot-toast";
+import Axios from "../utils/Axios";
+import SummaryApi from "../common/SummaryApi";
+import AxiosToastError from "../utils/AxiosToastError";
+import { Link, useNavigate } from "react-router-dom";
+import fetchUserDetails from "../utils/fetchUserDetails";
+import { useDispatch } from "react-redux";
+import { setUserDetails } from "../store/userSlice";
+
+const Login = () => {
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+  const [showPassword, setShowPassword] = useState(false)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+
+    setData((preve) => {
+      return {
+        ...preve,
+        [name]: value,
+      }
+    })
+  }
+
+  const valideValue = Object.values(data).every((el) => el)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    try {
+      const response = await Axios({
+        ...SummaryApi.login,
+        data: data,
+      })
+
+      if (response.data.error) {
+        toast.error(response.data.message)
+      }
+
+      if (response.data.success) {
+        toast.success(response.data.message)
+        localStorage.setItem('accesstoken',response.data.data.accesstoken)
+        localStorage.setItem('refreshToken',response.data.data.refreshToken)
+
+        const userDetails = await fetchUserDetails()
+        dispatch(setUserDetails(userDetails.data))
+
+        setData({
+          email: "",
+          password: "",
+        });
+        navigate("/")
+      }
+
+    } catch (error) {
+      AxiosToastError(error)
+    }
+  }
+  return (
+    <section className="w-full container mx-auto px-2">
+      <div className="bg-white my-4 w-full max-w-lg mx-auto rounded p-7">
+        <p>Inicar Sesión</p>
+
+        <form className="grid gap-4 py-4" onSubmit={handleSubmit}>
+          <div className="grid gap-1">
+            <label htmlFor="email">Correo Electrónico :</label>
+            <input
+              type="email"
+              id="email"
+              className="bg-blue-50 p-2 border rounded outline-none focus:border-primary-200"
+              name="email"
+              value={data.email}
+              onChange={handleChange}
+              placeholder="Ingresa tu correo electrónico"
+            />
+          </div>
+          <div className="grid gap-1">
+            <label htmlFor="password">Contraseña :</label>
+            <div className="bg-blue-50 p-2 border rounded flex items-center focus-within:border-primary-200">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                className="w-full outline-none"
+                // minLength={8}
+                // maxLength={8}
+                name="password"
+                value={data.password}
+                onChange={handleChange}
+                placeholder="Ingresa tu contraseña"
+                // required
+              />
+              <div
+                onClick={() => setShowPassword((preve) => !preve)}
+                className="cursor-pointer"
+              >
+                {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+              </div>
+            </div>
+            <Link to={"/forgot-password"} className="block ml-auto hover:text-yellow-600" >Olvidé la contraseña</Link>
+          </div>
+
+          <button
+            disabled={!valideValue}
+            className={` ${
+              valideValue ? "bg-yellow-600 hover:bg-yellow-700" : "bg-gray-500"
+            }    text-white py-2 rounded font-semibold my-3 tracking-wide`}
+          >
+            Iniciar Sesión
+          </button>
+        </form>
+
+        <p>
+          ¿No tienes cuenta?{" "}
+          <Link
+            to={"/register"}
+            className="font-semibold text-blue-600 hover:text-blue-700"
+          >
+            Registrarse
+          </Link>
+        </p>
+      </div>
+    </section>
+  )
+}
+
+export default Login;
