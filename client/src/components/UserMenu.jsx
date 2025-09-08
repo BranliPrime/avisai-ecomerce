@@ -1,4 +1,3 @@
-"use client"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate, useLocation } from "react-router-dom"
 import Axios from "../utils/Axios"
@@ -59,12 +58,10 @@ const UserMenu = ({ close, isDashboard = false }) => {
     }
   }
 
-  // Función para verificar si una ruta está activa
   const isActiveRoute = (path) => {
     return location.pathname === path
   }
 
-  // Si es dashboard, usar layout integrado (sin posición fixed)
   if (isDashboard) {
     return (
       <div className="w-full h-full bg-white">

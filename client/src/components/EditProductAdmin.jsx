@@ -202,8 +202,7 @@ const EditProductAdmin = ({ close, data: propsData, fetchProductData }) => {
   return (
     <section className='fixed inset-0 bg-black/60 backdrop-blur-sm z-50 p-4 flex items-center justify-center'>
       <div className='bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden max-h-[95vh] flex flex-col'>
-        {/*  Header mejorado con gradiente y mejor diseño */}
-        <div className='bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 flex items-center justify-between'>
+        <div className='bg-gradient-to-r from-green-600 to-green-600 text-white p-6 flex items-center justify-between'>
           <div className='flex items-center gap-3'>
             <div className='bg-white/20 p-2 rounded-lg'>
               <FaBoxes size={24} />
@@ -286,7 +285,7 @@ const EditProductAdmin = ({ close, data: propsData, fetchProductData }) => {
 
               <div className='mt-6 space-y-2'>
                 <label htmlFor='description' className='flex items-center gap-2 font-medium text-gray-700'>
-                  <FaAlignLeft className='text-purple-500' />
+                  <FaAlignLeft className='text-blue-500' />
                   Descripción
                 </label>
                 <textarea
@@ -314,7 +313,7 @@ const EditProductAdmin = ({ close, data: propsData, fetchProductData }) => {
             {/*  Sección de imágenes mejorada */}
             <div className='bg-gray-50 rounded-xl p-6'>
               <h3 className='text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2'>
-                <FaCloudUploadAlt className='text-indigo-600' />
+                <FaCloudUploadAlt className='text-blue-600' />
                 Imágenes del Producto
               </h3>
               <div className='space-y-4'>
@@ -616,7 +615,7 @@ const EditProductAdmin = ({ close, data: propsData, fetchProductData }) => {
               <button
                 type='submit'
                 disabled={isSubmitting}
-                className='flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-2'
+                className='flex-1 bg-gradient-to-r from-green-600 to-green-600 hover:from-green-700 hover:to-green-700 disabled:from-gray-400 disabled:to-gray-500 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-2'
               >
                 {isSubmitting ? (
                   <>

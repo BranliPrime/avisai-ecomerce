@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect, useMemo } from "react"
 import { useGlobalContext } from "../provider/GlobalProvider"
 import { DisplayPriceInSoles } from "../utils/DisplayPriceInSoles"
@@ -37,6 +35,10 @@ const CheckoutPage = () => {
 
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState({ validating: false, processing: false })
+  const [fieldsLocked, setFieldsLocked] = useState({
+    razonSocial: false,
+    direccionFiscal: false,
+  })
   const [currentStep, setCurrentStep] = useState(1)
   const [openEdit, setOpenEdit] = useState(false)
   const [editData, setEditData] = useState({})
@@ -48,7 +50,7 @@ const CheckoutPage = () => {
   const calculations = useMemo(() => {
     const subtotalSinIGV = +(totalPrice / 1.18).toFixed(2)
     const igv = +(totalPrice - subtotalSinIGV).toFixed(2)
-    const envio = 15
+    const envio = 0 // Making shipping free - changed from 15 to 0
     const totalFinal = +(totalPrice + envio).toFixed(2)
     const totalAhorros = cartItemsList.reduce((total, item) => {
       const precioOriginal = item?.productId?.price || 0
@@ -87,7 +89,6 @@ const CheckoutPage = () => {
     return () => clearTimeout(timer)
   }, [])
 
-  // Prevenir redirección si carrito vacío
   useEffect(() => {
     const stripePaymentStarted = localStorage.getItem("stripe_payment_started") === "true"
     if (!isInitialLoad && cartItemsList.length === 0 && !stripePaymentStarted) {
@@ -119,6 +120,13 @@ const CheckoutPage = () => {
   const updateFormData = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: null }))
+
+    if (field === "tipoDocumento" || field === "numeroDocumento") {
+      setFieldsLocked({
+        razonSocial: false,
+        direccionFiscal: false,
+      })
+    }
   }
 
   const validateForm = () => {
@@ -147,9 +155,14 @@ const CheckoutPage = () => {
       if (resultado.success) {
         if (formData.tipoDocumento === "1") {
           updateFormData("razonSocial", resultado.data.nombreCompleto)
+          setFieldsLocked((prev) => ({ ...prev, razonSocial: true }))
         } else {
           updateFormData("razonSocial", resultado.data.razonSocial)
           updateFormData("direccionFiscal", resultado.data.direccion)
+          setFieldsLocked({
+            razonSocial: true,
+            direccionFiscal: true,
+          })
         }
         toast.success("Documento validado correctamente")
       } else {
@@ -529,7 +542,7 @@ const CheckoutPage = () => {
                           className="px-4 sm:px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors whitespace-nowrap"
                         >
                           {loading.validating ? (
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center justify-center gap-2">
                               <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
                               <span className="hidden sm:inline">Validando...</span>
                             </div>
@@ -554,12 +567,18 @@ const CheckoutPage = () => {
                         }
                         className={`w-full border rounded-lg px-4 py-3 text-base focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
                           errors.razonSocial ? "border-red-500 bg-red-50" : "border-gray-300"
-                        }`}
+                        } ${fieldsLocked.razonSocial ? "bg-gray-100 cursor-not-allowed" : ""}`}
                         value={formData.razonSocial}
+                        disabled={fieldsLocked.razonSocial}
                         onChange={(e) => updateFormData("razonSocial", e.target.value)}
                       />
                       {errors.razonSocial && (
                         <p className="text-red-600 text-sm mt-2 flex items-center gap-1">⚠️ {errors.razonSocial}</p>
+                      )}
+                      {fieldsLocked.razonSocial && (
+                        <p className="text-blue-600 text-sm mt-2 flex items-center gap-1">
+                          ℹ️ Campo bloqueado - datos obtenidos automáticamente
+                        </p>
                       )}
                     </div>
 
@@ -570,12 +589,18 @@ const CheckoutPage = () => {
                         placeholder="Dirección fiscal completa"
                         className={`w-full border rounded-lg px-4 py-3 text-base focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
                           errors.direccionFiscal ? "border-red-500 bg-red-50" : "border-gray-300"
-                        }`}
+                        } ${fieldsLocked.direccionFiscal ? "bg-gray-100 cursor-not-allowed" : ""}`}
                         value={formData.direccionFiscal}
+                        disabled={fieldsLocked.direccionFiscal}
                         onChange={(e) => updateFormData("direccionFiscal", e.target.value)}
                       />
                       {errors.direccionFiscal && (
                         <p className="text-red-600 text-sm mt-2 flex items-center gap-1">⚠️ {errors.direccionFiscal}</p>
+                      )}
+                      {fieldsLocked.direccionFiscal && (
+                        <p className="text-blue-600 text-sm mt-2 flex items-center gap-1">
+                          ℹ️ Campo bloqueado - datos obtenidos automáticamente
+                        </p>
                       )}
                     </div>
 

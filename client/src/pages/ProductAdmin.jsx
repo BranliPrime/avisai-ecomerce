@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useState } from "react"
 import SummaryApi from "../common/SummaryApi"
 import AxiosToastError from "../utils/AxiosToastError"
@@ -17,11 +15,10 @@ const ProductAdmin = () => {
   const [searchTerm, setSearchTerm] = useState("")
   const [headerHeight, setHeaderHeight] = useState(0)
 
-  // Filtros mejorados con rango de precios en soles
   const [filters, setFilters] = useState({
-    priceRange: "all", // all, low, medium, high
-    stock: "all", // all, inStock, lowStock, outOfStock
-    discount: "all", // all, withDiscount, withoutDiscount
+    priceRange: "all",
+    stock: "all",
+    discount: "all",
   })
 
   const itemsPerPage = 12

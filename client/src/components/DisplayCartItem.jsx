@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useState } from "react"
 import { IoClose, IoWarningOutline } from "react-icons/io5"
 import { Link, useNavigate } from "react-router-dom"
@@ -84,7 +82,7 @@ const DisplayCartItem = ({ close }) => {
   // IGV ya incluido en el precio (no se suma aparte)
   const subtotalSinIGV = currentTotals.totalPrice / 1.18 // Precio sin IGV
   const IGV = currentTotals.totalPrice - subtotalSinIGV // IGV incluido
-  const envio = 15
+  const envio = 0
   const totalFinal = currentTotals.totalPrice + envio
 
   const savings = currentTotals.notDiscountTotalPrice - currentTotals.totalPrice
@@ -330,7 +328,7 @@ const DisplayCartItem = ({ close }) => {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Envío</span>
-                    <span className="font-medium text-gray-900">{DisplayPriceInSoles(envio)}</span>
+                    <span className="font-medium text-green-600">GRATIS</span>
                   </div>
                   <hr className="border-gray-200" />
                   <div className="flex justify-between items-center">

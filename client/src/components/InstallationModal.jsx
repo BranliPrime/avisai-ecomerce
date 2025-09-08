@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { X, Wrench, Clock, Shield, CheckCircle, Star, Truck } from "lucide-react"
 
@@ -60,7 +58,7 @@ const InstallationModal = ({ isOpen, onClose, productName, currentSelection, onC
           </button>
 
           <div className="text-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+            <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
               <Wrench className="w-10 h-10 text-white" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Servicio de Instalación</h2>
@@ -170,7 +168,7 @@ const InstallationModal = ({ isOpen, onClose, productName, currentSelection, onC
               disabled={!selectedOption}
               className={`flex-1 px-6 py-3 rounded-xl transition-all duration-200 font-semibold shadow-lg ${
                 selectedOption
-                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 hover:shadow-xl transform hover:scale-105"
+                  ? "bg-gradient-to-r from-green-600 to-green-600 text-white hover:from-green-700 hover:to-green-700 hover:shadow-xl transform hover:scale-105"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
             >

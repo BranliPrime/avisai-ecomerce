@@ -12,7 +12,6 @@
   orderRouter.get("/order-list",auth,getOrderDetailsController)
   orderRouter.post("/start-installation", auth, startInstallationController)
   orderRouter.post("/finish-installation", auth, finishInstallationController);
-  console.log('finishInstallationController:', finishInstallationController);
 
   // ADMIN
   orderRouter.get("/sales-report", auth, admin, getSalesReportController)

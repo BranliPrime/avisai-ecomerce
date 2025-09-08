@@ -4,7 +4,8 @@ import { useEffect, useState, useMemo } from "react"
 import Axios from "../utils/Axios"
 import AxiosToastError from "../utils/AxiosToastError"
 import toast from "react-hot-toast"
-import { Search, Calendar, TrendingUp, Users, Package, DollarSign } from "lucide-react"
+import { Search, Calendar, TrendingUp, Users, Package, DollarSign, Download } from "lucide-react"
+import * as XLSX from "xlsx"
 
 const ITEMS_PER_PAGE = 8
 
@@ -70,6 +71,60 @@ const SalesReport = () => {
 
   const handlePrevPage = () => setCurrentPage((p) => Math.max(1, p - 1))
   const handleNextPage = () => setCurrentPage((p) => Math.min(totalPages, p + 1))
+
+  const exportToExcel = () => {
+    try {
+      // Prepare data for Excel export
+      const exportData = filteredData.map((item, index) => ({
+        Producto: item.productName,
+        "Ventas Totales (S/)": item.totalSales.toFixed(2),
+        "Cantidad Vendida": item.totalQuantity,
+        "Órdenes Totales": item.totalOrders,
+        "Número de Clientes": item.customers.length,
+        Clientes: item.customers.join(", "),
+      }))
+
+      // Add summary row
+      exportData.push({
+        Producto: "RESUMEN TOTAL",
+        "Ventas Totales (S/)": summaryStats.totalRevenue.toFixed(2),
+        "Cantidad Vendida": summaryStats.totalQuantity,
+        "Órdenes Totales": summaryStats.totalOrders,
+        "Número de Clientes": "",
+        Clientes: `${summaryStats.totalProducts} productos únicos`,
+      })
+
+      // Create workbook and worksheet
+      const wb = XLSX.utils.book_new()
+      const ws = XLSX.utils.json_to_sheet(exportData)
+
+      // Set column widths
+      const colWidths = [
+        { wch: 30 }, // Producto
+        { wch: 20 }, // Ventas Totales
+        { wch: 15 }, // Cantidad Vendida
+        { wch: 15 }, // Órdenes Totales
+        { wch: 18 }, // Número de Clientes
+        { wch: 50 }, // Clientes
+      ]
+      ws["!cols"] = colWidths
+
+      // Add worksheet to workbook
+      XLSX.utils.book_append_sheet(wb, ws, "Reporte de Ventas")
+
+      // Generate filename with current date
+      const currentDate = new Date().toISOString().split("T")[0]
+      const filename = `reporte-ventas-${currentDate}.xlsx`
+
+      // Save file
+      XLSX.writeFile(wb, filename)
+
+      toast.success("Reporte exportado exitosamente")
+    } catch (error) {
+      console.error("Error exporting to Excel:", error)
+      toast.error("Error al exportar el reporte")
+    }
+  }
 
   if (loading) {
     return (
@@ -158,18 +213,30 @@ const SalesReport = () => {
         </div>
 
         <div className="bg-white/70 backdrop-blur-md rounded-2xl p-8 shadow-xl border border-white/20">
-          <h3 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
-              <Search className="w-4 h-4 text-white" />
-            </div>
-            Filtros
-          </h3>
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-6">
+            <h3 className="text-2xl font-bold text-slate-800 flex items-center gap-3">
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
+                <Search className="w-4 h-4 text-white" />
+              </div>
+              Filtros
+            </h3>
+
+            <button
+              onClick={exportToExcel}
+              disabled={filteredData.length === 0}
+              className="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-green-500 to-green-500 text-white rounded-xl hover:from-green-600 hover:to-green-600 disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-lg hover:shadow-xl disabled:shadow-none"
+            >
+              <Download className="w-5 h-5" />
+              Exportar a Excel
+            </button>
+          </div>
+
           <div className="flex flex-col lg:flex-row lg:items-center gap-6">
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
               <input
                 type="text"
-                placeholder="Buscar por producto o cliente..."
+                placeholder="Buscar por producto "
                 value={searchTerm}
                 onChange={(e) => {
                   setSearchTerm(e.target.value)
@@ -284,7 +351,7 @@ const SalesReport = () => {
                 <button
                   onClick={handlePrevPage}
                   disabled={currentPage === 1}
-                  className="flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-xl hover:from-blue-600 hover:to-indigo-600 disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-lg hover:shadow-xl disabled:shadow-none"
+                  className="flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-green-500 to-green-500 text-white rounded-xl hover:from-green-600 hover:to-green-600 disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-lg hover:shadow-xl disabled:shadow-none"
                 >
                   <span>← Anterior</span>
                 </button>
@@ -300,7 +367,7 @@ const SalesReport = () => {
                 <button
                   onClick={handleNextPage}
                   disabled={currentPage === totalPages}
-                  className="flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-xl hover:from-blue-600 hover:to-indigo-600 disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-lg hover:shadow-xl disabled:shadow-none"
+                  className="flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-green-500 to-green-500 text-white rounded-xl hover:from-green-600 hover:to-green-600 disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-lg hover:shadow-xl disabled:shadow-none"
                 >
                   <span>Siguiente →</span>
                 </button>

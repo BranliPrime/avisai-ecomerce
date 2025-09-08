@@ -61,7 +61,7 @@ const SearchPage = () => {
   };
 
   return (
-    <section className='bg-white'>
+    <section className='bg-white pt-24 lg:pt-20'>
       <div className='container mx-auto p-4'>
         <p className='font-semibold'>
           Resultados de búsqueda: {data.length}

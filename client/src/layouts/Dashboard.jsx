@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import UserMenu from "../components/UserMenu";
 import { Outlet } from "react-router-dom";
-// import Chatbot from '../components/Chatbot';  // Importa tu chatbot
 
 const Dashboard = () => {
   // const [chatOpen, setChatOpen] = useState(false);

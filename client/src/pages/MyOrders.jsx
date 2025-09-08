@@ -13,7 +13,6 @@ const MyOrders = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const ordersPerPage = 8;
 
-  //  Función mejorada para generar número de orden basado en fecha YYYYMMDD-XXX
   const generateOrderNumber = (createdAt, index) => {
     const date = new Date(createdAt);
     const year = date.getFullYear();
@@ -23,7 +22,7 @@ const MyOrders = () => {
     return `${year}${month}${day}-${orderNum}`;
   };
 
-  //  Función simplificada para estados de pago: solo Pagado, Contra entrega y Cancelado
+
   const getPaymentStatusInfo = (paymentStatus, paymentMethod) => {
     switch (paymentStatus?.toLowerCase()) {
       case 'paid':
@@ -55,10 +54,10 @@ const MyOrders = () => {
     }
   };
 
-  //  Filtrado simplificado - búsqueda solo por producto
+
   const filteredAndSortedOrders = useMemo(() => {
     let filtered = orders.filter(order => {
-      // Solo buscar por nombre de producto
+
       const matchesSearch = order.product_details?.name?.toLowerCase().includes(searchTerm.toLowerCase());
       
       if (statusFilter === 'all') return matchesSearch;
@@ -94,7 +93,7 @@ const MyOrders = () => {
     </button>
   );
 
-  // Función para renderizar paginación inteligente
+
   const renderPagination = () => {
     if (totalPages <= 1) return null;
 
@@ -128,7 +127,7 @@ const MyOrders = () => {
     return pages;
   };
 
-  // Función para formatear fecha
+
   const formatDate = (dateString) => {
     if (!dateString) return 'Fecha no disponible';
     const date = new Date(dateString);
@@ -141,21 +140,21 @@ const MyOrders = () => {
     });
   };
 
-  // Función para formatear precio en soles
+
   const formatPrice = (price) => {
     return `S/ ${parseFloat(price || 0).toFixed(2)}`;
   };
 
   return (
-    //  Aumentando padding-top significativamente para evitar que el header fijo tape el título
+
     <div className="p-6 h-full pt-20">
-      {/*  Título más prominente con tarjeta blanca para mejor visibilidad */}
+
       <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Mis Pedidos</h1>
         <p className="text-gray-600 mt-2">Gestiona y revisa todos tus pedidos</p>
       </div>
 
-      {/* Filtros simplificados */}
+
       <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Búsqueda solo por producto */}
@@ -175,7 +174,6 @@ const MyOrders = () => {
             </div>
           </div>
 
-          {/* Estados de pago simplificados */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Estado de pago
@@ -215,12 +213,11 @@ const MyOrders = () => {
         </div>
       </div>
 
-      {/*  Tabla con 4 columnas: Número de Orden, El Pedido, Estado, Ver Detalle */}
+
       {filteredAndSortedOrders.length === 0 ? (
         <NoData />
       ) : (
         <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
-          {/* Header de la tabla con estilo negro como en la imagen */}
           <div className="bg-gray-900 text-white">
             <div className="grid grid-cols-12 gap-4 px-6 py-4 text-sm font-semibold">
               <div className="col-span-3">Número de Orden</div>
@@ -247,7 +244,6 @@ const MyOrders = () => {
                     </div>
                   </div>
 
-                  {/* El pedido (imagen + detalles) */}
                   <div className="col-span-5 flex items-center space-x-4">
                     <img
                       src={order.product_details?.image?.[0] || '/placeholder.svg?height=60&width=60'}
@@ -265,7 +261,7 @@ const MyOrders = () => {
                     </div>
                   </div>
 
-                  {/*  Nueva columna separada para el estado */}
+
                   <div className="col-span-2 flex items-center">
                     <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${statusInfo.color}`}>
                       <StatusIcon className="w-4 h-4 mr-2" />
@@ -273,7 +269,7 @@ const MyOrders = () => {
                     </div>
                   </div>
 
-                  {/* Ver detalle */}
+
                   <div className="col-span-2 flex items-center justify-center space-x-2">
                     {order.comprobante?.pdf_url && (
                       <button className="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-700 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors">

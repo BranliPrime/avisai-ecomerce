@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import SummaryApi from "../common/SummaryApi"
@@ -243,11 +241,7 @@ const ProductDisplayPage = () => {
           <p className="text-lg text-red-500 my-2">Agotado</p>
         ) : (
           <div className="my-4">
-            <div className="mb-2 p-2 bg-gray-100 rounded text-xs">
-              <p>DEBUG - data.withInstallation: {data.withInstallation.toString()}</p>
-              <p>DEBUG - hasSelectedInstallation: {hasSelectedInstallation.toString()}</p>
-              <p>DEBUG - data.requiresInstallation: {data.requiresInstallation.toString()}</p>
-            </div>
+            
 
             {data.requiresInstallation && !data.withInstallation && (
               <div className="mb-4 p-4 bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 rounded-xl shadow-sm">

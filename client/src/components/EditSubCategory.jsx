@@ -100,7 +100,7 @@ const EditSubCategory = ({ close, data, fetchData }) => {
     <section className='fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200'>
       <div className='w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-300'>
         {/* Header */}
-        <div className='bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4'>
+        <div className='bg-gradient-to-r from-green-600 to-green-600 px-6 py-4'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center gap-3'>
               <div className='p-2 bg-white/20 rounded-lg'>
@@ -143,7 +143,7 @@ const EditSubCategory = ({ close, data, fetchData }) => {
           {/* Imagen */}
           <div className='space-y-2'>
             <label className='flex items-center gap-2 text-sm font-semibold text-gray-700'>
-              <IoImageOutline className='text-purple-500' />
+              <IoImageOutline className='text-blue-500' />
               Imagen de la Subcategoría
             </label>
             <div className='flex flex-col lg:flex-row items-start gap-4'>
@@ -168,7 +168,7 @@ const EditSubCategory = ({ close, data, fetchData }) => {
               </div>
               
               <label htmlFor='uploadSubCategoryImage' className='cursor-pointer'>
-                <div className='flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'>
+                <div className='flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-green-500 text-white rounded-xl hover:from-green-600 hover:to-green-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'>
                   <MdCloudUpload className='text-xl' />
                   {imageUploading ? 'Subiendo...' : 'Subir Imagen'}
                 </div>
@@ -186,7 +186,7 @@ const EditSubCategory = ({ close, data, fetchData }) => {
           {/* Categorías */}
           <div className='space-y-2'>
             <label className='flex items-center gap-2 text-sm font-semibold text-gray-700'>
-              <MdCategory className='text-green-500' />
+              <MdCategory className='text-blue-500' />
               Categorías Asociadas
             </label>
             
@@ -251,7 +251,7 @@ const EditSubCategory = ({ close, data, fetchData }) => {
             disabled={!isFormValid || isLoading}
             className={`w-full py-4 rounded-xl font-semibold text-white transition-all duration-200 transform ${
               isFormValid && !isLoading
-                ? 'bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 shadow-lg hover:shadow-xl hover:-translate-y-0.5'
+                ? 'bg-gradient-to-r from-green-500 to-green-500 hover:from-green-600 hover:to-green-600 shadow-lg hover:shadow-xl hover:-translate-y-0.5'
                 : 'bg-gray-300 cursor-not-allowed'
             }`}
           >

@@ -1,11 +1,10 @@
-"use client"
 import { useEffect, useRef, useState } from "react"
 import logo from "../assets/logo.png"
 import Search from "./Search"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { FaRegCircleUser } from "react-icons/fa6"
+import { BsCart4 } from "react-icons/bs" 
 import useMobile from "../hooks/useMobile"
-import { BsCart4 } from "react-icons/bs"
 import { useSelector } from "react-redux"
 import { GoTriangleDown, GoTriangleUp } from "react-icons/go"
 import UserMenu from "./UserMenu"
@@ -106,7 +105,7 @@ const Header = () => {
   }
 
   const currentTotals = getCurrentTotals()
-  const totalFinal = currentTotals.totalPrice + 15
+  const totalFinal = currentTotals.totalPrice // Removed + 15 for free shipping
 
   // Cerrar menú al hacer clic fuera
   useEffect(() => {
@@ -212,11 +211,12 @@ const Header = () => {
               {/* Botón carrito mejorado */}
               <button
                 onClick={() => setOpenCartSection(true)}
-                className={`flex items-center gap-3 bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-white transition-colors shadow-sm ${currentTotals.isMigrating ? "opacity-75" : ""
-                  }`}
+                className={`flex items-center gap-3 bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-white transition-colors shadow-sm ${
+                  currentTotals.isMigrating ? "opacity-75" : ""
+                }`}
               >
                 <div className="relative">
-                  <BsCart4 size={20} />
+                  <BsCart4 size={20} /> {/* Use BsCart4 */}
                   {/* Badge de cantidad */}
                   {currentTotals.totalQty > 0 && (
                     <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">

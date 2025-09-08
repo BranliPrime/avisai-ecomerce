@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useState } from "react"
 import UploadCategoryModel from "../components/UploadCategoryModel"
 import Loading from "../components/Loading"
@@ -24,7 +22,6 @@ const CategoryPage = () => {
   const [openConfimBoxDelete, setOpenConfirmBoxDelete] = useState(false)
   const [deleteCategory, setDeleteCategory] = useState({ _id: "" })
   const [headerHeight, setHeaderHeight] = useState(0)
-  //  Estados para paginación personalizada y ordenamiento
   const [currentPage, setCurrentPage] = useState(1)
   const [sortOrder, setSortOrder] = useState('asc')
   const itemsPerPage = 12
@@ -93,7 +90,6 @@ const CategoryPage = () => {
     }
   }, [])
 
-  //  Lógica de paginación personalizada
   const totalPages = Math.ceil(filteredData.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
@@ -120,7 +116,6 @@ const CategoryPage = () => {
 
   )
 
-  //  Función para generar números de página con puntos suspensivos
   const renderPageNumbers = () => {
     const pages = []
     const maxVisiblePages = 5

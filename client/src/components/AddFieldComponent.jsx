@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { IoClose, IoWarning, IoCheckmarkCircle } from "react-icons/io5"
 import { FaPlus } from "react-icons/fa"
@@ -67,7 +65,7 @@ const AddFieldComponent = ({ close, value, onChange, submit, currentCount, exist
   return (
     <section className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex justify-center items-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6">
+        <div className="bg-gradient-to-r from-green-600 to-green-600 text-white p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 p-2 rounded-lg">
@@ -158,7 +156,7 @@ const AddFieldComponent = ({ close, value, onChange, submit, currentCount, exist
               className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${
                 currentCount >= 10 || !!error || !value.trim()
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white hover:scale-105"
+                  : "bg-gradient-to-r from-green-600 to-green-600 hover:from-green-700 hover:to-green-700 text-white hover:scale-105"
               }`}
             >
               {isSubmitting ? (

@@ -60,8 +60,8 @@ const EditCategory = ({ close, fetchData, data: CategoryData }) => {
   return (
     <section className='fixed inset-0 p-4 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 animate-in fade-in duration-200'>
       <div className='bg-white max-w-2xl w-full rounded-2xl shadow-2xl border border-gray-100 overflow-hidden animate-in slide-in-from-bottom-4 duration-300'>
-        {/*  Header con gradiente y mejor diseño */}
-        <div className='bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 text-white'>
+
+        <div className='bg-gradient-to-r from-green-600 to-green-700 px-6 py-4 text-white'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center gap-3'>
               <div className='p-2 bg-white/20 rounded-lg'>
@@ -78,9 +78,8 @@ const EditCategory = ({ close, fetchData, data: CategoryData }) => {
           </div>
         </div>
 
-        {/*  Formulario con mejor espaciado y diseño */}
+
         <form className='p-6 space-y-6' onSubmit={handleSubmit(onSubmit)}>
-          {/*  Campo de nombre con icono y mejor diseño */}
           <div className='space-y-2'>
             <label htmlFor='categoryName' className='flex items-center gap-2 text-sm font-semibold text-gray-700'>
               <IoText className='text-blue-600' size={16} />
@@ -94,7 +93,7 @@ const EditCategory = ({ close, fetchData, data: CategoryData }) => {
                 className={`w-full px-4 py-3 pl-10 border-2 rounded-xl transition-all duration-200 outline-none ${
                   errors.name 
                     ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
-                    : 'border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200'
+                    : 'border-gray-200 bg-gray-50 focus:border-green-500 focus:bg-white focus:ring-2 focus:ring-green-200'
                 }`}
                 {...register('name', {
                   required: 'El nombre es obligatorio',
@@ -114,7 +113,6 @@ const EditCategory = ({ close, fetchData, data: CategoryData }) => {
             )}
           </div>
 
-          {/*  Área de imagen mejorada con mejor diseño */}
           <div className='space-y-2'>
             <label className='flex items-center gap-2 text-sm font-semibold text-gray-700'>
               <IoImage className='text-blue-600' size={16} />
@@ -122,13 +120,12 @@ const EditCategory = ({ close, fetchData, data: CategoryData }) => {
             </label>
             
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
-              {/*  Previsualización de imagen mejorada */}
               <div className={`relative border-2 border-dashed rounded-xl h-40 flex items-center justify-center transition-all duration-200 ${
                 errors.image 
                   ? 'border-red-300 bg-red-50' 
                   : imageUrl 
                     ? 'border-green-300 bg-green-50' 
-                    : 'border-gray-300 bg-gray-50 hover:border-blue-400 hover:bg-blue-50'
+                    : 'border-gray-300 bg-gray-50 hover:border-green-400 hover:bg-green-50'
               }`}>
                 {imageUrl ? (
                   <div className='relative w-full h-full'>
@@ -149,19 +146,19 @@ const EditCategory = ({ close, fetchData, data: CategoryData }) => {
                 )}
               </div>
 
-              {/*  Botón de subir imagen mejorado */}
+
               <div className='flex flex-col justify-center'>
                 <label htmlFor='uploadCategoryImage' className='cursor-pointer'>
                   <div className={`flex items-center justify-center gap-3 px-6 py-4 rounded-xl border-2 transition-all duration-200 ${
                     !watch('name') 
                       ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed' 
                       : imageLoading
-                        ? 'bg-blue-100 border-blue-300 text-blue-600'
-                        : 'bg-blue-50 border-blue-300 text-blue-600 hover:bg-blue-100 hover:border-blue-400'
+                        ? 'bg-green-100 border-green-300 text-green-600'
+                        : 'bg-green-50 border-green-300 text-green-600 hover:bg-green-100 hover:border-green-400'
                   }`}>
                     {imageLoading ? (
                       <>
-                        <div className='animate-spin rounded-full h-5 w-5 border-2 border-blue-600 border-t-transparent'></div>
+                        <div className='animate-spin rounded-full h-5 w-5 border-2 border-green-600 border-t-transparent'></div>
                         <span className='font-medium'>Subiendo...</span>
                       </>
                     ) : (
@@ -194,14 +191,14 @@ const EditCategory = ({ close, fetchData, data: CategoryData }) => {
             )}
           </div>
 
-          {/*  Botón de enviar mejorado con estados */}
+
           <div className='pt-4 border-t border-gray-100'>
             <button 
               type='submit'
               disabled={!isValid || !imageUrl || loading} 
               className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-200 ${
                 isValid && imageUrl && !loading
-                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5' 
+                  ? 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5' 
                   : 'bg-gray-200 text-gray-500 cursor-not-allowed'
               }`}
             >

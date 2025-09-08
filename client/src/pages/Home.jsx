@@ -5,9 +5,7 @@ import banner from '../assets/banner.png';
 import bannerMobile from '../assets/banner-mobile.jpg';
 import { valideURLConvert } from '../utils/valideURLConvert';
 import CategoryWiseProductDisplay from '../components/CategoryWiseProductDisplay';
-
-// Importa el Chatbot que creamos
-import Chatbot from '../components/Chatbot'; // Ajusta la ruta según donde esté tu componente
+import Chatbot from '../components/Chatbot';
 
 const Home = () => {
   const loadingCategory = useSelector(state => state.product.loadingCategory);
@@ -101,7 +99,6 @@ const Home = () => {
         <CategoryWiseProductDisplay key={c._id} id={c._id} name={c.name} />
       ))}
 
-      {/* Botón flotante para chatbot */}
       <button
         onClick={() => setChatOpen(prev => !prev)}
         aria-label={chatOpen ? "Cerrar chat de soporte" : "Abrir chat de soporte"}

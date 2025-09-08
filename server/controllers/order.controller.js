@@ -2,7 +2,6 @@ import Stripe from "../config/stripe.js"
 import CartProductModel from "../models/cartProduct.model.js"
 import OrderModel from "../models/order.model.js"
 import UserModel from "../models/user.model.js"
-import sendNotification from "../utils/sendNotification.js";
 
 import mongoose from "mongoose"
 import dotenv from "dotenv"
@@ -154,57 +153,44 @@ const getOrderProductItems = async ({ lineItems, userId, addressId, paymentId, p
   return productList
 }
 
+//http://localhost:3002/api/order/webhook
 export async function webhookStripe(request,response){
-    const event = request.body;
-    const endPointSecret = process.env.STRIPE_ENPOINT_WEBHOOK_SECRET_KEY
+  const event = request.body;
+  const endPointSecret = process.env.STRIPE_ENPOINT_WEBHOOK_SECRET_KEY
 
-    console.log("event",event)
+  console.log("event",event)
 
-    // Handle the event
-  switch (event.type) {
-    case 'checkout.session.completed':
-      const session = event.data.object;
-      const lineItems = await Stripe.checkout.sessions.listLineItems(session.id)
-      const userId = session.metadata.userId
-      const orderProduct = await getOrderProductItems(
-        {
-            lineItems : lineItems,
-            userId : userId,
-            addressId : session.metadata.addressId,
-            paymentId  : session.payment_intent,
-            payment_status : session.payment_status,
-        })
-    
-        const order = await OrderModel.insertMany(orderProduct)
-        const io = request.app.get("io") // 👈 recuerda que aquí tu parámetro es request, no req
-        io.to(userId.toString()).emit("new_order", order)
-        
+  // Handle the event
+switch (event.type) {
+  case 'checkout.session.completed':
+    const session = event.data.object;
+    const lineItems = await Stripe.checkout.sessions.listLineItems(session.id)
+    const userId = session.metadata.userId
+    const orderProduct = await getOrderProductItems(
+      {
+          lineItems : lineItems,
+          userId : userId,
+          addressId : session.metadata.addressId,
+          paymentId  : session.payment_intent,
+          payment_status : session.payment_status,
+      })
+  
+    const order = await OrderModel.insertMany(orderProduct)
 
-        console.log(order)
-        if (order?.length) {
-          await UserModel.findByIdAndUpdate(userId, { shopping_cart: [] });
-          await CartProductModel.deleteMany({ userId });
+      console.log(order)
+      if(Boolean(order[0])){
+          const removeCartItems = await  UserModel.findByIdAndUpdate(userId,{
+              shopping_cart : []
+          })
+          const removeCartProductDB = await CartProductModel.deleteMany({ userId : userId})
+      }
+    break;
+  default:
+    console.log(`Unhandled event type ${event.type}`);
+}
 
-          // 🔔 Enviar notificación push
-          const user = await UserModel.findById(userId);
-          if (user?.fcmToken) {
-            await sendPushNotification({
-              token: user.fcmToken,
-              title: "✅ Pago exitoso",
-              body: "Tu pedido ha sido confirmado. Gracias por tu compra.",
-              data: {
-                orderId: order[0]._id.toString(),
-              },
-            });
-          }
-        }
-        break;
-    default:
-      console.log(`Unhandled event type ${event.type}`);
-  }
-
-  // Return a response to acknowledge receipt of the event
-  response.json({received: true});
+// Return a response to acknowledge receipt of the event
+response.json({received: true});
 }
 
 export async function getOrderDetailsController(req, res) {

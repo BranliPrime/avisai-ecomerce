@@ -41,7 +41,8 @@
     "react-ui-cards": "^3.1.0",
     "recharts": "^2.15.1",
     "sweetalert2": "^11.15.10",
-    "swiper": "^11.2.10"
+    "swiper": "^11.2.10",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

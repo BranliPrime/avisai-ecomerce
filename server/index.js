@@ -39,35 +39,6 @@ app.use(helmet({
 
 const PORT = process.env.PORT || 3002
 
-// Crear servidor HTTP y pasar app express
-const server = http.createServer(app)
-
-// Crear instancia Socket.IO con configuración CORS
-const io = new Server(server, {
-  cors: {
-    origin: process.env.FRONTEND_URL || "*",
-    methods: ["GET", "POST"]
-  }
-})
-
-// Socket.IO conexión
-io.on("connection", (socket) => {
-  console.log("Nuevo cliente conectado, id:", socket.id)
-
-  // Opcional: unirse a "room" si envían userId
-  socket.on("join", (userId) => {
-    socket.join(userId)
-    console.log(`Socket ${socket.id} se unió a room: ${userId}`)
-  })
-
-  socket.on("disconnect", () => {
-    console.log("Cliente desconectado, id:", socket.id)
-  })
-})
-
-// Hacer accesible io dentro de rutas y controladores vía app
-app.set("io", io)
-
 // Rutas
 app.use('/api/user', userRouter)
 app.use("/api/category", categoryRouter)
@@ -88,11 +59,8 @@ app.get("/", (req, res) => {
   })
 })
 
-// Conectar a DB y levantar servidor HTTP
 connectDB().then(() => {
-  server.listen(PORT, () => {
-    console.log("Server running on port", PORT)
-  })
-}).catch((err) => {
-  console.error("Error connecting to DB", err)
-})
+  app.listen(PORT, () => {
+    console.log("Server is running", PORT);
+  });
+});
