@@ -129,7 +129,7 @@ const Chatbot = () => {
         try {
           const language = detectLanguage(userText)
 
-          const res = await fetch("http://localhost:3002/api/chatbot", {
+          const res = await fetch("https://avisai-ecomerce.vercel.app/api/chatbot", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message: userText, language }),
