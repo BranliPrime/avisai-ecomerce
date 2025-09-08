@@ -8,57 +8,47 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-export async function CashOnDeliveryOrderController(req, res) {
+export async function CashOnDeliveryOrderController(request,response){
   try {
-    const userId = req.userId
-    const { list_items, totalAmt, addressId, subTotalAmt } = req.body
-    const payload = list_items.map((el) => {
-      return {
-        userId: userId,
-        orderId: `ORD-${new mongoose.Types.ObjectId()}`,
-        productId: el.productId._id,
-        product_details: {
-          name: el.productId.name,
-          image: el.productId.image,
-        },
-        withInstallation: el.withInstallation || false,
-        paymentId: "",
-        payment_status: "PAGO CONTRA ENTREGA",
-        delivery_address: addressId,
-        subTotalAmt: subTotalAmt,
-        totalAmt: totalAmt,
-      }
-    })
-    const generatedOrder = await OrderModel.insertMany(payload)
-    const io = req.app.get("io")
-    io.to(userId.toString()).emit("new_order", generatedOrder)
-    const removeCartItems = await CartProductModel.deleteMany({ userId: userId })
-    const updateInUser = await UserModel.updateOne({ _id: userId }, { shopping_cart: [] })
+      const userId = request.userId // auth middleware 
+      const { list_items, totalAmt, addressId,subTotalAmt } = request.body 
 
-    const user = await UserModel.findById(userId);
-    if (user?.fcmToken) {
-      await sendPushNotification({
-        token: user.fcmToken,
-        title: "🛒 Pedido creado",
-        body: "Tu pedido con pago contra entrega fue registrado con éxito.",
-        data: {
-          orderId: generatedOrder[0]._id.toString(),
-        },
-      });
-    }
+      const payload = list_items.map(el => {
+          return({
+              userId : userId,
+              orderId : `ORD-${new mongoose.Types.ObjectId()}`,
+              productId : el.productId._id, 
+              product_details : {
+                  name : el.productId.name,
+                  image : el.productId.image
+              } ,
+              paymentId : "",
+              payment_status : "CASH ON DELIVERY",
+              delivery_address : addressId ,
+              subTotalAmt  : subTotalAmt,
+              totalAmt  :  totalAmt,
+          })
+      })
 
-    return res.json({
-      message: "Pedido realizado con éxito.",
-      error: false,
-      success: true,
-      data: generatedOrder,
-    })
+      const generatedOrder = await OrderModel.insertMany(payload)
+
+      ///remove from the cart
+      const removeCartItems = await CartProductModel.deleteMany({ userId : userId })
+      const updateInUser = await UserModel.updateOne({ _id : userId }, { shopping_cart : []})
+
+      return response.json({
+          message : "Order successfully",
+          error : false,
+          success : true,
+          data : generatedOrder
+      })
+
   } catch (error) {
-    return res.status(500).json({
-      message: error.message || error,
-      error: true,
-      success: false,
-    })
+      return response.status(500).json({
+          message : error.message || error ,
+          error : true,
+          success : false
+      })
   }
 }
 
