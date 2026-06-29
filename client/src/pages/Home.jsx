@@ -42,13 +42,13 @@ const Home = () => {
             src={banner}
             className="w-full h-full hidden lg:block object-cover transition-transform duration-500 hover:scale-105"
             alt="Promoción"
-            loading="lazy"
+            loading="eager"
           />
           <img
             src={bannerMobile}
             className="w-full h-full lg:hidden object-cover"
             alt="Promoción móvil"
-            loading="lazy"
+            loading="eager"
           />
         </div>
       </div>
@@ -82,7 +82,7 @@ const Home = () => {
                     src={cat.image || "/placeholder.svg"}
                     className="w-full h-36 object-contain transition-transform duration-500 hover:scale-110"
                     alt={cat.name}
-                    loading="lazy"
+                    loading="eager"
                   />
                 </div>
                 <h3 className="text-center text-md font-semibold text-gray-800 hover:text-green-600 transition-colors duration-300">
